@@ -22,5 +22,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('companies','CompaniesController');
 Route::resource('projects','ProjectsCompaniesController');
 Route::resource('roles','RolesCompaniesController');
-Route::resource('task','TasksController');
+Route::resource('tasks','TasksController');
 Route::resource('users','UsersController');
