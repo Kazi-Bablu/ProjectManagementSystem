@@ -14,35 +14,53 @@
                 <a href="/projects/create" class="pull-right btn btn-default btn-sm">Add Project</a>
 
                 <br/>
-                <form method="post" action="{{ route('companies.store')}}">
+                <div class="row">
+                <form method="post" action="{{ route('comments.store')}}">
                     {{csrf_field()}}
 
-
-                    <div class="form-group">
-                        <label for="company-name">Name<span class="required">"</span></label>
-                        <input placeholder="Enter name"
+                    <input type="hidden" name="commentable_type" value="project">
+                    <input type="hidden" name="commentable_id" value="{{$project->id}}">
+                 {{--   <div class="form-group">
+                        <label for="company-name">URL(proof of work done)<span class="required">"</span></label>
+                        <input placeholder="Enter url"
                                id="company-name"
                                required
                                name="name"
                                spellcheck="false"
                                class="form-control"
                         />
-                    </div>
+                    </div>--}}
+
+
                     <div class="form-group">
-                        <label for="company-content">Description</label>
-                        <textarea placeholder="Enter description"
+                        <label for="comment-content">Comment</label>
+                        <textarea placeholder="Enter comment"
                                   style="resize:vertical"
-                                  id="company-content"
-                                  name="description"
-                                  rows="5" spellcheck="false"
+                                  id="comment-content"
+                                  name="body"
+                                  rows="3" spellcheck="false"
                                   class="form-control autosize-target text-left">
                     </textarea>
                     </div>
+
+                    <div class="form-group">
+                        <label for="comment-content">Proof of work done(url)</label>
+                        <textarea placeholder="Enter url"
+                                  style="resize:vertical"
+                                  id="comment-content"
+                                  name="url"
+                                  rows="2" spellcheck="false"
+                                  class="form-control autosize-target text-left">
+                    </textarea>
+                    </div>
+
                     <div class="form-group">
                         <input type="submit" class="btn btn-primary"
                                value="submit"/>
                     </div>
                 </form>
+
+                </div>
 
 
 
