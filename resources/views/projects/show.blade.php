@@ -2,9 +2,9 @@
 @section('content')
         <div class="col-md-9 col-lg-9 col-sm-9  pull-left">
         <!-- Jumbotron -->
-            <div class="jumbotron">
-                <h1>{{$company->name}}</h1>
-                <p class="lead">{{$company->description}}</p>
+            <div class="well well-lg">
+                <h1>{{$project->name}}</h1>
+                <p class="lead">{{$project->description}}</p>
                 {{--<p><a class="btn btn-lg btn-success" href="#" role="button">Get started today</a></p>--}}
             </div>
 
@@ -13,13 +13,52 @@
 
                 <a href="/projects/create" class="pull-right btn btn-default btn-sm">Add Project</a>
 
-                @foreach($company->projects as $project)
-                    <div class="col-lg-4">
+                <br/>
+                <form method="post" action="{{ route('companies.store')}}">
+                    {{csrf_field()}}
+
+
+                    <div class="form-group">
+                        <label for="company-name">Name<span class="required">"</span></label>
+                        <input placeholder="Enter name"
+                               id="company-name"
+                               required
+                               name="name"
+                               spellcheck="false"
+                               class="form-control"
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="company-content">Description</label>
+                        <textarea placeholder="Enter description"
+                                  style="resize:vertical"
+                                  id="company-content"
+                                  name="description"
+                                  rows="5" spellcheck="false"
+                                  class="form-control autosize-target text-left">
+                    </textarea>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary"
+                               value="submit"/>
+                    </div>
+                </form>
+
+
+
+
+
+
+
+
+
+              {{--  @foreach($project->projects as $project)--}}
+                    {{--<div class="col-lg-4">
                         <h2>{{$project->	name}}</h2>
                         <p class="text-danger">{{$project->description}}</p>
                         <p><a class="btn btn-primary" href="/projects/{{$project->id}}" role="button">View Project »</a></p>
-                    </div>
-                 @endforeach
+                    </div>--}}
+               {{--  @endforeach--}}
             </div>
         </div>
 
@@ -31,13 +70,12 @@
             <div class="sidebar-module">
                 <h4>Action</h4>
                 <ol class="list-unstyled">
-                    <li><a href="/companies/{{$company->id}}/edit">Edit</a></li>
-                    <li><a href="/projects/create/{{$company->id}}">Add Project</a></li>
-                    <li><a href="/companies/create">Create new Company</a></li>
-                    <li><a href="/companies">My Companies</a></li>
+                    <li><a href="/projects/{{$project->id}}/edit">Edit</a></li>
+                    <li><a href="/projects/create">Add Project</a></li>
+                    <li><a href="/projects">My projects</a></li>
 
                     <br/>
-
+        @if($project->user_id == Auth::user()->id)
                     <li>
                         <a
                                 href="#"
@@ -52,12 +90,13 @@
                             Delete
                         </a>
 
-                        <form id="delete-form" action="{{ route('companies.destroy',[$company->id]) }}"
+                        <form id="delete-form" action="{{ route('projects.destroy',[$project->id]) }}"
                               method="post" style="display: none">
                             <input type="hidden" name="_method" value="delete">
                             {{csrf_field()}}
                         </form>
                     </li>
+         @endif
                     {{--<li><a href="#">Add new user</a></li>--}}
                 </ol>
             </div>
