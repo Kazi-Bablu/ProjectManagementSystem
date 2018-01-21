@@ -11,25 +11,16 @@
             <!-- Example row of columns -->
             <div class="row" style="background: white; margin: 10px;">
 
-                <a href="/projects/create" class="pull-right btn btn-default btn-sm">Add Project</a>
+               {{-- <a href="/projects/create" class="pull-right btn btn-default btn-sm">Add Project</a>--}}
 
                 <br/>
+                @include('partials.comments')
                 <div class="row">
                 <form method="post" action="{{ route('comments.store')}}">
                     {{csrf_field()}}
 
-                    <input type="hidden" name="commentable_type" value="project">
+                    <input type="hidden" name="commentable_type" value="App\Project">
                     <input type="hidden" name="commentable_id" value="{{$project->id}}">
-                 {{--   <div class="form-group">
-                        <label for="company-name">URL(proof of work done)<span class="required">"</span></label>
-                        <input placeholder="Enter url"
-                               id="company-name"
-                               required
-                               name="name"
-                               spellcheck="false"
-                               class="form-control"
-                        />
-                    </div>--}}
 
 
                     <div class="form-group">
@@ -62,29 +53,10 @@
 
                 </div>
 
-
-
-
-
-
-
-
-
-              {{--  @foreach($project->projects as $project)--}}
-                    {{--<div class="col-lg-4">
-                        <h2>{{$project->	name}}</h2>
-                        <p class="text-danger">{{$project->description}}</p>
-                        <p><a class="btn btn-primary" href="/projects/{{$project->id}}" role="button">View Project »</a></p>
-                    </div>--}}
-               {{--  @endforeach--}}
             </div>
         </div>
 
         <div class="col-sm-3 col-md-3 col-lg-3  pull-right">
-          {{--  <div class="sidebar-module sidebar-module-inset">
-                <h4>About</h4>
-                <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
-            </div>--}}
             <div class="sidebar-module">
                 <h4>Action</h4>
                 <ol class="list-unstyled">
@@ -93,7 +65,7 @@
                     <li><a href="/projects">My projects</a></li>
 
                     <br/>
-        @if($project->user_id == Auth::user()->id)
+                      @if($project->user_id == Auth::user()->id)
                     <li>
                         <a
                                 href="#"
@@ -114,9 +86,34 @@
                             {{csrf_field()}}
                         </form>
                     </li>
-         @endif
-                    {{--<li><a href="#">Add new user</a></li>--}}
+                    @endif
+
                 </ol>
+                <hr/>
+                <h4>Add members</h4>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <form id="add-user" action="{{route('projects.adduser')}}"
+                              method="POST">
+                            {{csrf_field()}}
+                            <div class="input-group">
+                                <input class="form-control" name="project_id" value="{{$project->id}}" type="hidden">
+                                <input type="text" class="form-control" name="email" placeholder="Email for">
+                                <span class="input-group-btn">
+                                <button class="btn btn-default" type="submit">Add!</button>
+                              </span>
+                            </div><!-- /input-group -->
+                        </form>
+                    </div><!-- /.col-lg-6 -->
+                </div><!-- /.row -->
+            <hr/>
+                <h4>Team Members</h4>
+                <ol class="list-unstyled">
+                    @foreach($project->user as $user)
+                        <li><a href="#">{{$user->email}}</a></li>
+                    @endforeach
+                </ol>
+
             </div>
     {{--        <div class="sidebar-module">
                 <h4>Members</h4>

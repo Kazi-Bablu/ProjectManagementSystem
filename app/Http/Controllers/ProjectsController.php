@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Company;
 use App\Project;
+use App\ProjectUser;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 class ProjectsController extends Controller
@@ -20,6 +22,40 @@ class ProjectsController extends Controller
             return view('projects.index',['projects'=>$projects]);
         }
         return view('auth.login');
+    }
+
+    public  function adduser(Request $request)
+    {
+        //add user to projects
+        $project = Project::find($request->input('project_id'));
+
+
+
+
+        if(Auth::user()->id == $project->user_id){
+            $user = User::where('email',$request->input('email'))->first();
+            //check user already exit in project
+            $ProjectUser = ProjectUser::where('user_id',$user->id)
+                                                            ->where('project_id',$project->id)
+                                                             ->first();
+
+            if($ProjectUser)
+            {
+                //if user alrady exists
+                return redirect()->route('projects.show',['project'=>$project->id])
+                    ->with('success',$request->input('email').'is already exist..!');
+            }
+
+            if($user && $project){
+
+                $project->user()->toggle($user->id);
+                return redirect()->route('projects.show',['project'=>$project->id])
+                    ->with('success',$request->input('email').'Was add to the project successfully!!');
+            }
+        }
+        return redirect()->route('projects.show',['project'=>$project->id])
+            ->with('error','Error adding user to project');
+
     }
 
     /**
@@ -71,7 +107,8 @@ class ProjectsController extends Controller
     public function show(Project $project)
     {
         $project = Project::find($project->id);
-        return view('projects.show',['project'=>$project]);
+        $comments = $project->comments;
+        return view('projects.show',['project'=>$project,'comments'=>$comments]);
     }
 
     /**
